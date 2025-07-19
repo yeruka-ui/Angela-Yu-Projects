@@ -1,4 +1,3 @@
-import csv
 import turtle
 import pandas
 
@@ -19,10 +18,7 @@ while len(guessed) < 50:
     user_answer = screen.textinput(title=f"{len(guessed)}/50 States Correct",
                                    prompt="What's another state's name? ").title()
     if user_answer == "Exit":
-        missing_states = []
-        for state in all_state:
-            if state not in guessed:
-                missing_states.append(state)
+        missing_states = [state for state in all_state if state not in guessed]
         missing_states_df = pandas.DataFrame(missing_states)
         missing_states_df.to_csv("States to learn.csv")
         break
