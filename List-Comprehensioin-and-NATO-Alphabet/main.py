@@ -24,12 +24,20 @@ for (index, row) in student_data_frame.iterrows():
 #TODO 1. Create a dictionary in this format:
 
 
-nato_alphabet = pandas.read_csv("nato_phonetic_alphabet.csv")
-nato_alphabet_df = pandas.DataFrame(nato_alphabet)
-phonetic_dict = {row.letter:row.code for (index, row) in nato_alphabet_df.iterrows()}
+    nato_alphabet = pandas.read_csv("nato_phonetic_alphabet.csv")
+    nato_alphabet_df = pandas.DataFrame(nato_alphabet)
+    phonetic_dict = {row.letter:row.code for (index, row) in nato_alphabet_df.iterrows()}
 
-#TODO 2. Create a list of the phonetic code words from a word that the user inputs.
-user_input = input("Enter a word: ").upper()
-user_letters = list(user_input)
-word_dict = [phonetic_dict[letter] for letter in user_letters]
-print(word_dict)
+def generate_code():
+    user_input = input("Enter a word: ").upper()
+    try:
+        #TODO 2. Create a list of the phonetic code words from a word that the user inputs.
+        user_letters = list(user_input)
+        word_dict = [phonetic_dict[letter] for letter in user_letters]
+    except KeyError:
+        print("Only letters in the alphabet!")
+        generate_code()
+    else:
+        print(word_dict)
+
+generate_code()
