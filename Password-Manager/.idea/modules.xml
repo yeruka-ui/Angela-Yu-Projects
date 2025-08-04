@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Password-Manager.iml" filepath="$PROJECT_DIR$/.idea/Password-Manager.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../Pomodoro/.idea/Pomodoro.iml" filepath="$PROJECT_DIR$/../Pomodoro/.idea/Pomodoro.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../Tkinter_Unit_Converter/.idea/Tkinter_Unit_Converter.iml" filepath="$PROJECT_DIR$/../Tkinter_Unit_Converter/.idea/Tkinter_Unit_Converter.iml" />
     </modules>
   </component>
 </project>

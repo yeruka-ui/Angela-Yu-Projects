@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from random import choice, randint, shuffle
 import pyperclip
+import json
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 #Password Generator Project
 def generate_password():
@@ -12,31 +13,61 @@ def generate_password():
     password_list = (([choice(letters) for char in range(randint(8, 10))] +
                      [choice(symbols) for char in range(randint(2, 4))]) +
                      [choice(numbers) for char in range(randint(2, 4))])
-
+        
     shuffle(password_list)
 
     password = "".join(password_list)
     password_entry.insert(0, password)
     pyperclip.copy(password)
 
-
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save_information():
     website =   website_entry.get()
     email = email_entry.get()
     password = password_entry.get()
+    new_data = {website: {
+        "email": email,
+        "password": password
+    }}
 
     if not website or not email or not password:
         messagebox.showwarning("Warning", "Please provide all the required information.")
     else:
-        is_ok = messagebox.askokcancel(title= website, message= f"These are the details entered: \nE-mail: {email} \nPassword: {password} \n"
-                                                        f"Is the information provided correct?")
-        if is_ok:
-            with open ("data.txt", "a") as f:
-                f.write(f"{website} | {email} | {password}\n")
+        try:
+            with open ("data.json", "r") as f:
+                data = json.load(f) #Reading old data
+        except FileNotFoundError:
+            with open("data.json", "w") as f:
+                json.dump(new_data, f, indent=4)
+        else:
+            data.update(new_data)  # Updating old data with new data
+
+            with open("data.json", "w") as f:
+                json.dump(data, f, indent=4) #Save the file in JSON
+        finally:
             website_entry.delete(0, END)
             password_entry.delete(0, END)
-            messagebox.showinfo("CloseBox", "Your details have been saved.")
+
+        messagebox.showinfo("CloseBox", "Your details have been saved.")
+
+# ---------------------------- FIND PASSWORD ------------------------------- #
+def find_password():
+    website = website_entry.get()
+    try:
+        with open("data.json", "r") as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        messagebox.showwarning("Warning: No Information", "No details for this website exists.")
+    else:
+        if website in data:
+            email_find = data[website]["email"]
+            password_find = data[website]["password"]
+            messagebox.showinfo("Information", f"Website: {email_find} \nPassword: {password_find}")
+        else:
+            messagebox.showwarning("Warning: No account", f"The details for that {website} does not exist.")
+    finally:
+        website_entry.delete(0, END)
+        password_entry.delete(0, END)
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
@@ -61,12 +92,12 @@ password_label = Label(text = "Password: ")
 password_label.grid(column = 0, row = 3)
 
 # Website Entry:
-website_entry = Entry(width= 48)
-website_entry.grid(column = 1, row = 1, columnspan = 2)
+website_entry = Entry(width= 29)
+website_entry.grid(column = 1, row = 1)
 website_entry.focus()
 
 # Email Entry:
-email_entry = Entry(width= 48)
+email_entry = Entry(width= 44)
 email_entry.grid(column = 1, row = 2, columnspan = 2)
 email_entry.insert(0,"laurenkailey05@gmail.com")
 
@@ -75,12 +106,16 @@ password_entry = Entry(width= 29)
 password_entry.grid(column = 1, row = 3)
 
 # Generate Button
-password_generate = Button(text= "Generate Password", width=15, command= generate_password)
+password_generate = Button(text= "Generate", width=11, command= generate_password)
 password_generate.grid(column = 2, row = 3, sticky="w")
 
 # Add Button
 add_button = Button(text= "Add", width=40, command = save_information)
 add_button.grid(column = 1, row = 4, columnspan = 2)
+
+# Generate Button
+search_button = Button(text= "Search", width=11, command= find_password)
+search_button.grid(column = 2, row = 1, sticky="w")
 
 
 window.mainloop()
