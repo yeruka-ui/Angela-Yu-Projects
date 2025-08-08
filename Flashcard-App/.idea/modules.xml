@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Flashcard-App.iml" filepath="$PROJECT_DIR$/.idea/Flashcard-App.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../Pomodoro/.idea/Pomodoro.iml" filepath="$PROJECT_DIR$/../Pomodoro/.idea/Pomodoro.iml" />
     </modules>
   </component>
 </project>
